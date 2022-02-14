@@ -11,7 +11,7 @@ function isHabitable(planet) {
         planet["koi_prad"] < 1.6
     );
 }
-function loadPlanetData() {
+function loadPlanetsData() {
     return new Promise((resolve, reject) => {
         fs.createReadStream(
             path.join(__dirname, "..", "..", "data", "kepler_data.csv")
@@ -38,7 +38,11 @@ function loadPlanetData() {
     });
 }
 
+function getPlanetsData() {
+    return habitablePlanets;
+}
+
 module.exports = {
-    loadPlanetData,
-    planets: habitablePlanets,
+    loadPlanetsData,
+    getPlanetsData,
 };
