@@ -1,0 +1,32 @@
+{
+    "name": "nasa-project",
+    "version": "1.0.0",
+    "description": "Educational project to simulate mission launches to Kepler system",
+    "main": "index.js",
+    "scripts": {
+        "install-server": "npm install --prefix server",
+        "install-client": "npm install --prefix client",
+        "install": "npm run install-server && npm run install-client",
+        "server": "npm run watch --prefix server",
+        "client": "npm start --prefix client",
+        "deploy": "npm run build --prefix client && npm start --prefix server",
+        "watch": "npm run server & npm run client",
+        "test": "npm run test --prefix server && npm run test --prefix client"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Maxwell200073/NASA-Project.git"
+    },
+    "keywords": [
+        "NASA",
+        "backend",
+        "node",
+        "MVC"
+    ],
+    "author": "Chris Maxwell",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Maxwell200073/NASA-Project/issues"
+    },
+    "homepage": "https://github.com/Maxwell200073/NASA-Project#readme"
+}
