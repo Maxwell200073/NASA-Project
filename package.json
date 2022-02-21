@@ -28,5 +28,8 @@
     "bugs": {
         "url": "https://github.com/Maxwell200073/NASA-Project/issues"
     },
-    "homepage": "https://github.com/Maxwell200073/NASA-Project#readme"
+    "homepage": "https://github.com/Maxwell200073/NASA-Project#readme",
+    "devDependencies": {
+        "@types/jest": "^27.4.0"
+    }
 }
