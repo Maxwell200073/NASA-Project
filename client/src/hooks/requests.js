@@ -6,7 +6,10 @@ async function httpGetPlanets() {
 async function httpGetLaunches() {
     const response = await fetch("http://localhost:5000/launches");
     const fetchedLaunches = await response.json();
-    return fetchedLaunches.sort((a, b) => a.flightNumber - b.flightNumber);
+    // console.log(fetchedLaunches);
+    return await fetchedLaunches.sort(
+        (a, b) => a.flightNumber - b.flightNumber
+    );
 }
 
 async function httpSubmitLaunch(launch) {

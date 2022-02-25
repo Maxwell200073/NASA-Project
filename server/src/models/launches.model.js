@@ -1,46 +1,97 @@
-const launches = new Map();
+const launches = require("./launches.mongo");
+const planets = require("./planets.mongo");
 
-let latestFlightNumber = 100;
+const DEFAULT_FLIGHTNUMBER = 100;
 
-const launch = {
-    mission: "Kepler Exploration Jarano",
-    rocket: "Explorer IS1",
-    launchDate: new Date("December 27, 2030"),
-    target: "Kepler-442 b",
-    customers: ["ZTM", "NASA"],
-    upcoming: true,
-    success: true,
-    flightNumber: 100,
-};
+async function addNewLaunch(launch) {
+    // latestFlightNumber++;
 
-launches.set(launch.flightNumber, launch);
+    return await saveLaunch(launch);
+}
 
-function addNewLaunch(launch) {
-    latestFlightNumber++;
-    launches.set(
-        latestFlightNumber,
-        Object.assign(launch, {
-            customers: ["ZTM", "NASA"],
-            upcoming: true,
-            success: true,
-            flightNumber: latestFlightNumber,
-        })
+async function launchExist(launchId) {
+    return await launches.findOne(
+        {
+            flightNumber: launchId,
+        },
+        {
+            _id: 0,
+            __v: 0,
+        }
     );
 }
 
-function launchExist(launchId) {
-    return launches.has(launchId);
+async function getLatestFlightNumber() {
+    const latestFlight = await launches
+        .findOne(
+            {},
+            {
+                flightNumber: 1,
+                _id: 0,
+            }
+        )
+        .sort({ flightNumber: -1 });
+
+    if (!latestFlight) {
+        return DEFAULT_FLIGHTNUMBER;
+    }
+
+    return await latestFlight.flightNumber;
 }
 
-function getLaunchesData() {
-    return Array.from(launches.values());
+async function getLaunchesData() {
+    return await launches.find(
+        {},
+        {
+            _id: 0,
+            __v: 0,
+        }
+    );
 }
 
-function abortLaunch(id) {
-    const aborted = launches.get(id);
+async function abortLaunch(id) {
+    const aborted = await launches.findOne({
+        flightNumber: id,
+    });
+    await launches.updateOne(aborted, {
+        upcoming: false,
+        success: false,
+    });
     aborted.upcoming = false;
     aborted.success = false;
-    return aborted;
+    return await aborted;
+}
+
+async function saveLaunch(launch) {
+    if (await planetInDatabase(launch.target)) {
+        let latestFlightNumber = (await getLatestFlightNumber()) + 1;
+        return await launches.updateOne(
+            {
+                flightNumber: latestFlightNumber,
+            },
+            {
+                flightNumber: latestFlightNumber,
+                mission: launch.mission,
+                rocket: launch.rocket,
+                launchDate: launch.launchDate,
+                target: launch.target,
+                customers: ["ZTM", "NASA"],
+                upcoming: true,
+                success: true,
+            },
+            {
+                upsert: true,
+            }
+        );
+    } else {
+        throw new Error("Planet not found");
+    }
+}
+
+async function planetInDatabase(planet) {
+    return await planets.findOne({
+        keplerName: planet,
+    });
 }
 
 module.exports = {
