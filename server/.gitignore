@@ -1,6 +1,7 @@
 node_modules
 public 
 logs
+private.js
 
 # misc
 .DS_Store

@@ -3,6 +3,7 @@ const http = require("http");
 const app = require("./app");
 const mongoose = require("mongoose");
 const { loadPlanetsData } = require("./models/planets.model");
+const MONGO_URL = require("../private");
 
 const server = http.createServer(app);
 
