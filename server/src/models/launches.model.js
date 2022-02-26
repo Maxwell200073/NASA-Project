@@ -4,8 +4,6 @@ const planets = require("./planets.mongo");
 const DEFAULT_FLIGHTNUMBER = 100;
 
 async function addNewLaunch(launch) {
-    // latestFlightNumber++;
-
     return await saveLaunch(launch);
 }
 
