@@ -4,7 +4,7 @@ const app = require("../../app");
 describe("Test GET /launches", () => {
     test("should get 200 response", async () => {
         const response = await request(app)
-            .get("/launches")
+            .get("/v1/launches")
             .expect("Content-Type", /json/)
             .expect(200);
     });
@@ -25,7 +25,7 @@ describe("Test POST /launch", () => {
 
     test("should get a 201 response", async () => {
         const response = await request(app)
-            .post("/launches")
+            .post("/v1/launches")
             .send(completeLaunchData)
             .expect("Content-Type", /json/)
             .expect(201);
@@ -44,7 +44,7 @@ describe("Test POST /launch", () => {
         // completeLaunchData is assigned an improper date for test
         completeLaunchData.launchDate = "December 44, 2029";
         const response = await request(app)
-            .post("/launches")
+            .post("/v1/launches")
             .send(completeLaunchData)
             .expect("Content-Type", /json/)
             .expect(400);
@@ -56,7 +56,7 @@ describe("Test POST /launch", () => {
 
     test("should fail if missing fields", async () => {
         const response = await request(app)
-            .post("/launches")
+            .post("/v1/launches")
             .send(launchDataWithoutDate)
             .expect("Content-Type", /json/)
             .expect(400);
